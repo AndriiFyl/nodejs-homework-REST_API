@@ -1,8 +1,10 @@
-const contactsOperations = require("../../models/contacts");
+// імпортуємо модель
+const { Contact } = require("../../models");
 
 
 const addContact = async (req, res) => {
-    const result = await contactsOperations.addContact(req.body);
+  // метод додавання в базу
+    const result = await Contact.create(req.body);
     res.status(201).json({
     status: "success",
       code: 201,

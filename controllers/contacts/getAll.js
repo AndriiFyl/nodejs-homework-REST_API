@@ -1,7 +1,9 @@
-const contactsOperations = require("../../models/contacts");
+// імпортуємо модель
+const { Contact } = require("../../models");
 
 const getAll = async (req, res) => {
-    const contacts = await contactsOperations.getAll();
+  // Contact.find({}) - метод в Mongo DB для отримання списку контактів
+    const contacts = await Contact.find({});
     res.json({
       status: "success",
       code: 200,

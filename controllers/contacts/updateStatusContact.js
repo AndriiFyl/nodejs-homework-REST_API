@@ -1,10 +1,12 @@
 const { Contact } = require("../../models");
 
 
-const updateContactById = async (req, res) => {
-  const { contactId } = req.params;
+const updateStatusContact = async (req, res) => {
+    const { contactId } = req.params;
+    // витягуємо статус із body
+    const { favorite } = req.body;
   // метод оновлення контакту по id на Mongo DB
-    const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
+    const result = await Contact.findByIdAndUpdate(contactId, {favorite}, {new: true});
     if (!result) {
       const error = new Error(`Contact with id=${contactId} not found`);
       error.status = 404;
@@ -18,4 +20,4 @@ const updateContactById = async (req, res) => {
     })
 }
 
-module.exports = updateContactById;
+module.exports = updateStatusContact;

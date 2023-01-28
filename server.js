@@ -1,8 +1,20 @@
 // імпортуємо сюди сервер з app.js
 const app = require('./app')
+// імпортуємо mongoose
+const mongoose = require("mongoose");
+
+// забираємо строку підключення зі змінних оточення (.env) 
+// mongodb+srv://Alonso:Vi7yc0FHP7LuLfZa@cluster0.aguuluq.mongodb.net/contacts_list_data?retryWrites=true&w=majority
+const {DB_HOST, PORT = 3000 } = process.env;
 
 
-// щоб запустити сервер, необхідно викликати метод listen та вказати порт (будь-яке число);
-app.listen(3000, () => {
-  console.log("Server running. Use our API on port: 3000")
+// через mongoose підключаємось до бази
+mongoose.connect(DB_HOST)
+// як тільки підключились до бази - запускаємо сервер
+  .then(() => app.listen(PORT))
+  .catch(error => {
+    console.log(error.message);
+    // якщо не вдалось підключитись - закриваємо всі процеси
+    process.exit(1);
 })
+
