@@ -3,30 +3,6 @@ const logger = require('morgan')
 const cors = require('cors')
 // викликаємо dotenv, щоб те що у файлі .env (ліві частини: DB_HOST=, DB_USER= та ін) потрапили в змінні оточення
 require("dotenv").config();
-// ================================================================================================================
-// name Mongo (additional user) - Alonso
-// password Mongo (additional user) - Vi7yc0FHP7LuLfZa
-
-// строка підключення кластеру, з яким працюємо - необхідно для проги Mongo DB Compass
-// mongodb+srv://Alonso:Vi7yc0FHP7LuLfZa@cluster0.aguuluq.mongodb.net/test
-// =====================================================================================================================
-
-
-// імпортуємо mongoose (для роботи з БД - Mongo DB)
-// const mongoose = require("mongoose");
-// далі для mongoose передати строку підключення до бази (а семо до contacts_list_data)
-// строка підключення до бази contacts_list_data
-// mongodb+srv://Alonso:<password>@cluster0.aguuluq.mongodb.net/?retryWrites=true&w=majority
-// const DB_HOST = "mongodb+srv://Alonso:Vi7yc0FHP7LuLfZa@cluster0.aguuluq.mongodb.net/contacts_list_data?retryWrites=true&w=majority"
-// mongoose.connect(DB_HOST)
-//   // mongoose повертає проміс
-//   .then(() => console.log("Database connect"))
-//   // опрацьовуємо помилку підключення
-//   .catch(error => {
-//     console.log(error.message)
-//     process.exit(1);
-//   })
-
 
 const contactsRouter = require('./routes/api/contacts');
 
@@ -54,37 +30,47 @@ module.exports = app;
 
 
 
-
-// // Original + comments======================================================================
-// // express - пакет необхідний для роботи з HTTP(request, response) та дозволяє створити сервер з інструкціями:
-// // "що робити при певному запиті та яку відповідь надати фронту"
+// COMMENTS==============================================
 // const express = require('express')
-// // імпортуємо пакет morgan (ще одна maddleware, яка виводить до консолі запити)
 // const logger = require('morgan')
-// // щоб отримати можливість робити кросдоменні запити(з одного сайту на інший) на етапі - імпортуємо пакет cors
-// // оскільки по дефолту сервер забороняє будь-які запити з інших доменів(сайтів), але на етапі розробки фронт та бек мають різні домени,
-// // і для розробника це незручно
 // const cors = require('cors')
+// // викликаємо dotenv, щоб те що у файлі .env (ліві частини: DB_HOST=, DB_USER= та ін) потрапили в змінні оточення
+// require("dotenv").config();
+// // ================================================================================================================
+// // name Mongo (additional user) - Alonso
+// // password Mongo (additional user) - передаємо до файлу .env
 
-// // експортуємо сюди сторінку з оброблювачами (для різних запитів)
+// // строка підключення кластеру, з яким працюємо - необхідно для проги Mongo DB Compass
+// // mongodb+srv://Alonso:<PASSWORD>@cluster0.aguuluq.mongodb.net/test
+// // =====================================================================================================================
+
+
+// // імпортуємо mongoose (для роботи з БД - Mongo DB)
+// // const mongoose = require("mongoose");
+// // далі для mongoose передати строку підключення до бази (а семо до contacts_list_data)
+// // строка підключення до бази contacts_list_data
+// // mongodb+srv://Alonso:<password>@cluster0.aguuluq.mongodb.net/?retryWrites=true&w=majority
+// // const DB_HOST = "mongodb+srv://Alonso:<PASSWORD>@cluster0.aguuluq.mongodb.net/contacts_list_data?retryWrites=true&w=majority"
+// // mongoose.connect(DB_HOST)
+// //   // mongoose повертає проміс
+// //   .then(() => console.log("Database connect"))
+// //   // опрацьовуємо помилку підключення
+// //   .catch(error => {
+// //     console.log(error.message)
+// //     process.exit(1);
+// //   })
+
+
 // const contactsRouter = require('./routes/api/contacts');
 
-// // щоб створити сервер, потрібно викликати express як функцію, тобто app - і буде сервером
 // const app = express()
 
-// // визначаємо спосіб виводу інфи (dev - повноцінна інфа, short - в короткій формі)
 // const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
-// // передаємо інфу в logger
 // app.use(logger(formatsLogger))
-// // використовуємо cors як middleawre при роботі сервера
 // app.use(cors())
 
-// // middleware express.json() - перевіряє всі вхідні запити на сервер і якщо тіло запиту приходить в JSON-форматі, то ця мідлвар 
-// // трансформує JSON до об'єкта і записує його до request.body
 // app.use(express.json())
 
-// // якщо на початку такий маршрут - '/api/contacts', то ф-ї, що будуть оброблювати його запити будуть на сторінці contactsRouter,
-// // а вже всі методи будемо розписувати у файлі routes/api/contacts.js 
 // app.use('/api/contacts', contactsRouter)
 
 // app.use((req, res) => {
@@ -92,77 +78,12 @@ module.exports = app;
 // })
 
 // app.use((err, req, res, next) => {
-//   res.status(500).json({ message: err.message })
+//     // задаємо дефолтні значення для об'єкту помилку і якщо буде помилка з іншим статусом чи повідомленням - перезапишемо
+//     const { status = 500, message = "Server error" } = err;
+//   res.status(status).json({ message: message })
 // })
 
 // module.exports = app;
-
-
-
-
-
-// EXAMPLES================================================================================================================
-// // express - пакет необхідний для роботи з HTTP(request, response) та дозволяє створити сервер з інструкціями:
-// // "що робити при певному запиті та яку відповідь надати фронту"
-// const express = require('express')
-// const contacts = require('./models/contacts.json');
-// // щоб створити сервер, потрібно викликати express як функцію, тобто app - і буде сервером
-// const app = express();
-// // щоб отримати можливість робити кросдоменні запити(з одного сайту на інший) на етапі - імпортуємо пакет cors
-// // оскільки по дефолту сервер забороняє будь-які запити з інших доменів(сайтів), але на етапі розробки фронт та бек мають різні домени,
-// // і для розробника це незручно
-// const cors =  require("cors");
-
-// // використовуємо cors як middleawre при роботі сервера
-// app.use(cors());
-
-
-// // Також за допомогою метода use можемо використати middleware перед запитом (обов'язково перед запитом)==========================
-// // і будь-який наш запит обо'язково буде пропоходити через middleware=============================================================
-// // app.use((request, response, next) => {
-// //     console.log("first middlaware");
-// //     // необхідно вказати next, щоб запити що знаходяться нижче спрацювали
-// //     next();
-// // })
-
-// // app.use((request, response, next) => {
-// //     console.log("second middlaware");
-// //     next();
-// // })
-
-// // даний middleware при кожному запиті буде записувати до файлу fileRegister.log дату
-// // const fs = require("fs/promises");
-// // const moment = require("moment");
-
-// // app.use(async (req, res, next) => {
-// //     // беремо методи з об'єкту запиту
-// //     const { method, url } = req;
-// //     // date - беремо з бібліотеки
-// //     const date = moment().format("DD-MM-YYY_hh:mm:ss");
-// //     // записуємо до файлу fileRegister.log нову дату при кожному запиті(оновленні)
-// //     await fs.appendFile("fileRegister.log", `\n${method} ${url} ${date}`);
-// //     next();
-// // })
-// // =========================================================================================================================
-
-// // тепер потрібно прописати інструкції для сервера
-// // 1. якщо на сервер прийде GET запит за адресою /contacts, то потрібно виконати наступну функцію (request, response),
-// // де request об'єкт з усією інфою для запиту: певний метод(get, post, put....), url та додаткові інструкції
-// // response - відповідь, яку надасть сервер
-// app.get("/contacts", (request, response) => {
-//     // console.log(request.url);
-//     // console.log(request.method);
-//     // console.log(request.headers);
-
-//     // більш правильно замість response.send виkористовувати response.json (дозволяє додадати додаткові налаштування) та
-//     // повертати біль складні об'єкти
-//     // response.send - краще використовувати, коли ми повертаємо розмітку (невелику кількість)
-//     // response.send(contacts);
-//     response.json(contacts);
-// })
-
-// module.exports = app;
-
 
 
 

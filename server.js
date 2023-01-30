@@ -4,7 +4,7 @@ const app = require('./app')
 const mongoose = require("mongoose");
 
 // забираємо строку підключення зі змінних оточення (.env) 
-// mongodb+srv://Alonso:Vi7yc0FHP7LuLfZa@cluster0.aguuluq.mongodb.net/contacts_list_data?retryWrites=true&w=majority
+// mongodb+srv://Alonso:<PASSWORD>@cluster0.aguuluq.mongodb.net/contacts_list_data?retryWrites=true&w=majority
 const {DB_HOST, PORT = 3000 } = process.env;
 
 
