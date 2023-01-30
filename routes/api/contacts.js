@@ -2,26 +2,29 @@ const express = require('express')
 const router = express.Router()
 
 const { validation, ctrlWrapper } = require("../../middleWares")
-const { contactSchema } = require("../../schemas");
+const { joiSchema, favoriteJoiSchema } = require("../../models");
 const { contacts: ctrl } = require("../../controllers");
 
-const validateMiddleware = validation(contactSchema);
 
 router.get("/", ctrlWrapper(ctrl.getAll));
 
 // знайти контакт по id===============================================================================================================
 router.get('/:contactId', ctrlWrapper(ctrl.getById) )
 
-// Додавання контакта=========================================================================
-router.post('/', validateMiddleware, ctrlWrapper(ctrl.addContact))
+// // Додавання контакта=========================================================================
+router.post('/', validation(joiSchema), ctrlWrapper(ctrl.addContact))
 
-// оновлення контакта по id================================================================
-router.put('/:contactId', validateMiddleware, ctrlWrapper(ctrl.updateContactById))
+// // оновлення контакта по id================================================================
+router.put('/:contactId', validation(joiSchema), ctrlWrapper(ctrl.updateContactById))
 
-// видалення контакту============================================================================
+// // видалення контакту============================================================================
 router.delete('/:contactId', ctrlWrapper(ctrl.removeContactById)); 
 
+// оновлення поля favorite в контакті=================================================================
+router.patch('/:contactId/favorite', validation(favoriteJoiSchema), ctrlWrapper(ctrl.updateStatusContact))
+
 module.exports = router;
+
 
 // // Comments 2
 // const express = require('express')
@@ -65,7 +68,7 @@ module.exports = router;
 // module.exports = router;
 
 
-// COMMENTS - 1
+// COMMENTS - 1=========================================================
 // // express - бібліотека для створення серверу
 // const express = require('express')
 // // // створюємо певну сторінку з різними запитами (зберігаючи основний сервер)
