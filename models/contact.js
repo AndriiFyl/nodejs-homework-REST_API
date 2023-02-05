@@ -1,3 +1,6 @@
+// файл для моделі називаємо в однині (наприклад в БД наша колекція називається contacts,
+// то файл для моделі назвемо contact.js)
+
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
@@ -8,7 +11,15 @@ const contactSchema = Schema({
      favorite: {
       type: Boolean,
       default: false,
-    },
+  },
+    //  owner - пов'язує колекцію contact та user 
+  owner: {
+        // type - буде зберігатись id - юзера (що матиме доступ до цього контакту)
+    type: Schema.Types.ObjectId,
+    // в ref  - назва колекціїї, до якої буде доступ (user)
+    ref: 'user',
+      required: true
+    }
     
 }, { versionKey: false, timestamps: true });
 
