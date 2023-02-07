@@ -16,6 +16,9 @@ app.use(logger(formatsLogger))
 app.use(cors())
 
 app.use(express.json())
+// створюємо мідлвару express.static, щоб запит, який прийде за статичними файлами - розумів, що шукати їх
+// потрібно в папці "public"
+app.use(express.static("public"))
 
 // всі запити, що починаються з /api/contacts (ендпойнт) будуть опрацьовуватись роутом contactsRouter
 app.use('/api/contacts', contactsRouter)
@@ -36,6 +39,9 @@ app.use((err, req, res, next) => {
     const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message: message })
 })
+
+
+
 
 module.exports = app;
 

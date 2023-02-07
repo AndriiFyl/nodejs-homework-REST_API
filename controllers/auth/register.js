@@ -1,5 +1,6 @@
 const { User } = require("../../models");
-
+// імпортуємо пакет gravatar, який автоматично генеруэ аватари для кожного юзера
+const gravatar = require('gravatar');
 const { Conflict } = require("http-errors");
 
 const bcrypt = require("bcryptjs");
@@ -17,8 +18,10 @@ const register = async (req, res) => {
     }
 
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-    await User.create({ name, email, password: hashPassword, subscription });
+    
+    // в змінну avatarURL через gravatar записуємо емейл юзера (яеому потрібно сгенерувати аватар)
+    const avatarURL = gravatar.url(email);
+    await User.create({ name, email, password: hashPassword, subscription, avatarURL });
     
     res.status(201).json({
         status: "success",
@@ -27,7 +30,8 @@ const register = async (req, res) => {
             user: {
                 email,
                 name,
-                subscription
+                subscription,
+                avatarURL
             }
         }
     })
