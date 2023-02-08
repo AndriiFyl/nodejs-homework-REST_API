@@ -38,7 +38,7 @@ const multerConfiq = multer.diskStorage({
 })
 
 
-// maddleware upload
+// mіddleware upload
 const upload = multer({
 storage: multerConfiq
 })

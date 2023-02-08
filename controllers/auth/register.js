@@ -19,7 +19,7 @@ const register = async (req, res) => {
 
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
     
-    // в змінну avatarURL через gravatar записуємо емейл юзера (яеому потрібно сгенерувати аватар)
+    // в змінну avatarURL через gravatar записуємо емейл юзера (якому потрібно сгенерувати аватар)
     const avatarURL = gravatar.url(email);
     await User.create({ name, email, password: hashPassword, subscription, avatarURL });
     
