@@ -15,14 +15,18 @@ const login = async (req, res) => {
   
     const user = await User.findOne({ email });
    
-    if (!user) {
-        throw new Unauthorized(`email ${email} not found`);
+    if (!user || !user.verify) {
+        throw new Unauthorized(`email ${email} is wrong or not verify`);
     }
 
     const passCompare = bcrypt.compareSync(password, user.password);
    
     if (!passCompare) {
-       throw new Unauthorized(`password ${password} wrong`); 
+       throw new Unauthorized(`password ${password} is wrong`); 
+    }
+
+    if (!user.verify) {
+        throw Unauthorized("Email is not verify");
     }
    
     const payload = {
