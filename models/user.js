@@ -28,6 +28,14 @@ const userSchema = Schema({
   avatarURL: {
     type: String,
     required: true
+  },
+  verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+    required: [true, 'Verify token is required'],
   }
 
 }, { versionKey: false, timestamps: true });
@@ -51,11 +59,18 @@ const joiLoginSchema = Joi.object({
   password: Joi.string().min(6).required()
 })
 
+
+// схема верифікації емейла юзера
+const verifyEmailSchema = Joi.object({
+  email: Joi.string().required(),
+})
+
 // модель (до колекції під назвою user застосується userSchema - для валідації)
 const User = model("user", userSchema);
 
 module.exports = {
     User,
-    joiRegisterSchema,
-    joiLoginSchema
+  joiRegisterSchema,
+  joiLoginSchema,
+  verifyEmailSchema
 }

@@ -5,7 +5,10 @@ const { Conflict } = require("http-errors");
 
 const bcrypt = require("bcryptjs");
 
+const { sendEmail } = require("../../helpers");
+const { nanoid } = require("nanoid");
 
+ 
 const register = async (req, res) => {
     
     const { name, email, password, subscription } = req.body;
@@ -18,11 +21,25 @@ const register = async (req, res) => {
     }
 
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+
+    // створюємо токен для верифікації
+    const verificationToken = nanoid();
     
     // в змінну avatarURL через gravatar записуємо емейл юзера (якому потрібно сгенерувати аватар)
     const avatarURL = gravatar.url(email);
-    await User.create({ name, email, password: hashPassword, subscription, avatarURL });
+    await User.create({ name, email, password: hashPassword, subscription, avatarURL, verificationToken });
     
+//    лист, який будемо відправляти
+    const mail = {
+        to: email,
+        subject: "Approve email",
+        html: `<a target="_blank" hreaf="http://localhost:3000/api/users/verify/${verificationToken}">Approve email</a>`
+    };
+     
+    // відправляємо лист
+    await sendEmail(mail);
+
+
     res.status(201).json({
         status: "success",
         code: 201,
@@ -31,7 +48,8 @@ const register = async (req, res) => {
                 email,
                 name,
                 subscription,
-                avatarURL
+                avatarURL,
+                verificationToken
             }
         }
     })
